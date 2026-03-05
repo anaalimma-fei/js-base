@@ -1,9 +1,43 @@
-// Seleciona o ícone do menu e a lista de navegação pelo ID
-const menuIcon = document.getElementById('menu-icon');
-const navList = document.getElementById('nav-list');
+// Seleciona o botão de busca e adiciona um evento de clique
+document.getElementById("fetchUser").addEventListener("click", async function () {
+  // Seleciona o elemento onde os dados do usuário serão exibidos
+  const userDataElement = document.getElementById("userData");
 
-// Adiciona um evento de clique ao ícone do menu
-menuIcon.addEventListener('click', () => {
-  // Alterna a classe "active" na lista de navegação
-  navList.classList.toggle('active');
+  // Bloco try: tenta executar o código assíncrono
+  try {
+
+    // Async e await são usados em JavaScript para simplificar o trabalho com código assíncrono.
+
+    // No exemplo:
+    // async define funções como assíncronas, permitindo o uso de await.
+    // await pausa a execução até que a operação assíncrona (como fetch) seja concluída e retorna o resultado.
+    
+    // Juntos, tornam o código mais legível, eliminando a necessidade de cadeias complexas de .then() e .catch().
+
+    // Faz a requisição à API usando fetch e espera a resposta (await)
+     const response = await fetch('https://jsonplaceholder.typicode.com/users/5');
+
+    // Verifica se a resposta da API foi bem-sucedida (status 200-299)
+
+    // 1ª Digitação (Aqui)
+    if (!response.ok){
+      throw new Error ("erro ao buscar os dados do usuario.") // lança um erro personalizado
+    }
+   
+    // Converte a resposta para JSON e espera o resultado (await)
+    const user = await response.json(); 
+    
+    // Exibe os dados do usuário na página
+    userDataElement.innerHTML =`
+    <h2>Dados do Usuario:</h2>
+    <p><strong>Nome:</strong> ${user.name}</p>
+    <p><strong>Email:</strong> ${user.email}</p>
+    <p><strong>Telefone:</strong> ${user.phone}</p>
+    `
+    
+  } catch (error) {
+    // Bloco catch: captura e trata erros que ocorreram no bloco try
+    userDataElement.innerHTML = <p style="color: red;">Erro: ${error.message}</p>; // Exibe a mensagem de erro
+    console.error(error); // Exibe o erro no console para debugging
+  }
 });
